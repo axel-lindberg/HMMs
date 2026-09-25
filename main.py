@@ -1,6 +1,7 @@
 import sys
 from hmm0 import next_observation_distribution
 from hmm1 import forward_algorithm
+from hmm2 import viterbi
 
 def read_matrix(lines):
     tokens = lines.split()
@@ -36,48 +37,49 @@ def read_sequence(line):
 
     return seq
 
-def format_matrix(M):
-    rows = len(M)
-    cols = len(M[0])
-
-    values = []
-
-    for row in M:
-        for value in row:
-            values.append(f"{value:.6f}")
-
-    return f"{rows} {cols} " + " ".join(values)
-
-def format_vector(v):
-    cols = len(v)
-    
-    values = []
-    
-    for value in v:
-        values.append(f"{value:.6f}")
-        
-    return f"1 {cols} " + " ".join(values)
-
-def main():
+def hmm0():
     lines = sys.stdin.read().splitlines()
-    
-    #HMM0
-    # A = read_matrix(lines[0]) #transition matrix
-    # B = read_matrix(lines[1]) #emission matrix
-    # pi = read_matrix(lines[2]) #initial state
-
-    # p = next_observation_distribution(A, B, pi)
-    
-    # print(format_vector(p))
-    
-    #HMM1
     A = read_matrix(lines[0]) #transition matrix
     B = read_matrix(lines[1]) #emission matrix
     pi = read_matrix(lines[2]) #initial state
+
+    p = next_observation_distribution(A, B, pi)
+    
+    print(1, len(p), *p)
+    
+def hmm1():
+    lines = sys.stdin.read().splitlines()
+    A = read_matrix(lines[0])
+    B = read_matrix(lines[1])
+    pi = read_matrix(lines[2])
     obs = read_sequence(lines[3]) #sequence of emissions
     
     alpha = forward_algorithm(A, B, pi[0], obs)
     print(sum(alpha[-1]))
+    
+def hmm2():
+    lines = sys.stdin.read().splitlines()
+    A = read_matrix(lines[0])
+    B = read_matrix(lines[1])
+    pi = read_matrix(lines[2])
+    obs = read_sequence(lines[3])
+    
+    path = viterbi(A, B, pi[0], obs)
+    
+    print(*path)
+    
+def hmm3():
+    lines = sys.stdin.read().splitlines()
+    A = read_matrix(lines[0])
+    B = read_matrix(lines[1])
+    pi = read_matrix(lines[2])
+    obs = read_sequence(lines[3])
+
+def main():
+    # hmm0()
+    # hmm1()
+    # hmm2()
+    hmm3()
     
 if __name__ == "__main__":
     main()
