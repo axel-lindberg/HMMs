@@ -1,7 +1,10 @@
 import sys
+import math
+from helper import log_likelihood
 from hmm0 import next_observation_distribution
 from hmm1 import forward_algorithm
 from hmm2 import viterbi
+from hmm3 import baum_welch
 
 def read_matrix(lines):
     tokens = lines.split()
@@ -54,8 +57,8 @@ def hmm1():
     pi = read_matrix(lines[2])
     obs = read_sequence(lines[3]) #sequence of emissions
     
-    alpha = forward_algorithm(A, B, pi[0], obs)
-    print(sum(alpha[-1]))
+    alpha, c = forward_algorithm(A, B, pi[0], obs)
+    print(math.exp(log_likelihood(c)))
     
 def hmm2():
     lines = sys.stdin.read().splitlines()
@@ -74,6 +77,11 @@ def hmm3():
     B = read_matrix(lines[1])
     pi = read_matrix(lines[2])
     obs = read_sequence(lines[3])
+    
+    A, B, pi = baum_welch(A, B, pi[0], obs)
+    
+    print(len(A), len(A[0]), *(v for row in A for v in row))
+    print(len(B), len(B[0]), *(v for row in B for v in row))
 
 def main():
     # hmm0()
