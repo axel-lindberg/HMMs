@@ -13,6 +13,6 @@ def vec_mat_mult(v, M):
 
 def log_likelihood(c):
     log_prob = 0.0
-    for ci in c:
-        log_prob += math.log(ci)
+    for c_i in c:
+        log_prob += math.log(c_i)
     return -log_prob
