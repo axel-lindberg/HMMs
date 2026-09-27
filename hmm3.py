@@ -66,24 +66,26 @@ def reestimate(gamma, di_gamma, obs, N, M, T):
             
     return A, B, pi
 
-def baum_welch(A, B, pi, obs, max_iters=100):
+def baum_welch(A, B, pi, obs, max_iters=1000, tol=1e-6):
     N = len(A)
     M = len(B[0])
     T = len(obs)
     
     old_log_prob = float('-inf')
     
-    for _ in range(max_iters):
+    for iters in range(max_iters):
         alpha, c = forward_algorithm(A, B, pi, obs)
         beta = backward_algorithm(A, B, obs, N, T, c)
         gamma, di_gamma = compute_gammas(alpha, beta, A, B, obs, N, T)
         A, B, pi = reestimate(gamma, di_gamma, obs, N, M, T)
         
         log_prob = log_likelihood(c)
-        if log_prob > old_log_prob:
+        num_iters = iters + 1
+        
+        if log_prob > old_log_prob + tol:
             old_log_prob = log_prob
         else:
             break
     
-    return A, B, pi
+    return A, B, pi, num_iters
     
