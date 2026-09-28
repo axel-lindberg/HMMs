@@ -113,15 +113,12 @@ def exp_2():
     close = ([[0.72,0.04,0.24],[0.12,0.77,0.11],[0.22,0.28,0.50]], [[0.68,0.21,0.09,0.02],[0.11,0.42,0.28,0.19],[0.02,0.11,0.22,0.65]], [1,0,0])
 
     for name, (A0, B0, pi0) in [("uniform", uniform), ("zeros", zeros), ("close", close)]:
-        try:
-            A, B, pi, _ = baum_welch(A0, B0, pi0, obs)
-            _, c = forward_algorithm(A, B, pi, obs)
-            print(name)
-            print("log-likelihood per observation =", log_likelihood(c) / len(obs))
-            print("A =", A)
-            print("B =", B)
-        except ZeroDivisionError:
-            print(name, "ZeroDivisionError")
+        A, B, pi, _ = baum_welch(A0, B0, pi0, obs)
+        _, c = forward_algorithm(A, B, pi, obs)
+        print(name)
+        print("log-likelihood per observation =", log_likelihood(c) / len(obs))
+        print("A =", A)
+        print("B =", B)
             
 def exp_3():
     obs_train = read_obs_file("hmm_c_N10000.in")
@@ -152,9 +149,9 @@ def main():
     # hmm2()
     # hmm3()
     
-    exp_1()
+    #exp_1()
     exp_2()
-    exp_3()
+    # exp_3()
     
 if __name__ == "__main__":
     main()

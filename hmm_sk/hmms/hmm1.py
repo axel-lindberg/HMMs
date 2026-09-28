@@ -24,7 +24,7 @@ def forward_algorithm(A, B, pi, obs):
             c[t] += alpha[t][i]
             
         #Scale alpha_t(i)
-        c[t] = 1.0 / c[t] if c[t] > 0 else 0.0
+        c[t] = 1.0 / c[t]
         for i in range(N):
             alpha[t][i] *= c[t]
         

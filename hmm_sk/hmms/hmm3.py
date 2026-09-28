@@ -1,5 +1,5 @@
-from hmm1 import forward_algorithm
-from helper import log_likelihood
+from hmms.hmm1 import forward_algorithm
+from hmms.helper import log_likelihood
 
 def backward_algorithm(A, B, obs, N, T, c):
     beta = [[0.0] * N for _ in range(T)]
